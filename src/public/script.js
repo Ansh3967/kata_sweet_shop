@@ -1,6 +1,7 @@
 // script.js
 
-const API_BASE_URL = "http://localhost:5000/sweets";
+const API_BASE_URL =
+  "https://sweet-shop-management-system-git-main-anshs-projects-bffcba85.vercel.app/sweets";
 
 // --- DOM Elements ---
 const addSweetForm = document.getElementById("add-sweet-form");
