@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const serverless = require("serverless-http");
 
 const app = express();
 
@@ -12,3 +13,4 @@ const sweetRoutes = require("./routes/sweetRouter");
 app.use("/sweets", sweetRoutes);
 
 module.exports = app;
+module.exports.handler = serverless(app);
