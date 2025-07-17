@@ -1,0 +1,24 @@
+{
+  "name": "kata_sweet_shop-incubyte---copy",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "jest": "^30.0.4",
+    "mongoose": "^8.16.3",
+    "supertest": "^7.1.3"
+  },
+  "devDependencies": {
+    "mongodb-memory-server": "^10.1.4"
+  }
+}
