@@ -1,7 +1,6 @@
 // script.js
 
-const API_BASE_URL =
-  "https://sweet-shop-management-system-git-main-anshs-projects-bffcba85.vercel.app/sweets";
+const API_BASE_URL = "http://localhost:5000/sweets";
 
 // --- DOM Elements ---
 const addSweetForm = document.getElementById("add-sweet-form");
@@ -17,9 +16,8 @@ const searchMinPriceInput = document.getElementById("search-min-price");
 const searchMaxPriceInput = document.getElementById("search-max-price");
 const clearSearchBtn = document.getElementById("clear-search-btn");
 
-// MODAL RELATED ELEMENTS
-const updateSweetModal = document.getElementById("update-sweet-modal"); // New: Reference to the modal overlay
-const updateSweetForm = document.getElementById("update-sweet-form"); // Still refers to the form inside the modal
+const updateSweetModal = document.getElementById("update-sweet-modal");
+const updateSweetForm = document.getElementById("update-sweet-form");
 const updateIdInput = document.getElementById("update-id");
 const updateNameInput = document.getElementById("update-name");
 const updateCategoryInput = document.getElementById("update-category");
@@ -45,14 +43,14 @@ function displayMessage(msg, type) {
   messageContainer.innerHTML = `<div class="message ${type}">${msg}</div>`;
   setTimeout(() => {
     messageContainer.innerHTML = "";
-  }, 5000); // Clear message after 5 seconds
+  }, 5000);
 }
 
 function displaySearchMessage(msg, type) {
   searchMessageContainer.innerHTML = `<div class="message ${type}">${msg}</div>`;
   setTimeout(() => {
     searchMessageContainer.innerHTML = "";
-  }, 5000); // Clear message after 5 seconds
+  }, 5000);
 }
 
 function clearAddForm() {
@@ -123,7 +121,7 @@ function validateSweetData(data) {
   if (isNaN(data.quantity) || parseInt(data.quantity) < 0) {
     return "Quantity must be a non-negative integer.";
   }
-  return null; // No error
+  return null;
 }
 
 function validateQuantity(qty, fieldName) {
@@ -156,7 +154,7 @@ async function fetchSweets(queryParams = "") {
       `Failed to load sweets: ${error.message}. Please ensure the backend server is running.`,
       "error"
     );
-    renderSweetList([]); // Clear list on error
+    renderSweetList([]);
   }
 }
 
@@ -180,7 +178,7 @@ async function addSweet(sweetData) {
     if (response.ok) {
       displayMessage("Sweet added successfully!", "success");
       clearAddForm();
-      fetchSweets(); // Refresh the list
+      fetchSweets();
     } else {
       displayMessage(data.error || "Failed to add sweet.", "error");
     }
@@ -209,8 +207,8 @@ async function updateSweet(id, sweetData) {
     const data = await response.json();
     if (response.ok) {
       displayMessage("Sweet updated successfully!", "success");
-      hideUpdateForm(); // Hide the modal after update
-      fetchSweets(); // Refresh the list
+      hideUpdateForm();
+      fetchSweets();
     } else {
       displayMessage(data.error || "Failed to update sweet.", "error");
     }
@@ -231,7 +229,7 @@ async function deleteSweet(id) {
 
     if (response.ok) {
       displayMessage("Sweet deleted successfully!", "success");
-      fetchSweets(); // Refresh the list
+      fetchSweets();
     } else {
       const data = await response.json();
       displayMessage(data.error || "Failed to delete sweet.", "error");
@@ -261,7 +259,7 @@ async function purchaseSweet(id, quantity) {
     const data = await response.json();
     if (response.ok) {
       displayMessage("Sweet purchased successfully!", "success");
-      fetchSweets(); // Refresh the list
+      fetchSweets();
     } else {
       displayMessage(data.error || "Failed to purchase sweet.", "error");
     }
@@ -290,7 +288,7 @@ async function restockSweet(id, quantity) {
     const data = await response.json();
     if (response.ok) {
       displayMessage("Sweet restocked successfully!", "success");
-      fetchSweets(); // Refresh the list
+      fetchSweets();
     } else {
       displayMessage(data.error || "Failed to restock sweet.", "error");
     }
@@ -328,7 +326,7 @@ function renderSweetList(sweets) {
   <td>${sweetId.substring(0, 8)}...</td>
   <td>${name}</td>
   <td>${category}</td>
-  <td>$${price.toFixed(2)}</td>
+  <td>₹${price.toFixed(2)}</td>
   <td>${quantity}</td>
   <td>
     <div class="action-buttons">
@@ -388,20 +386,18 @@ function renderSearchList(sweets) {
   <td>${sweetId.substring(0, 8)}...</td>
   <td>${name}</td>
   <td>${category}</td>
-  <td>$${price.toFixed(2)}</td>
+  <td>₹${price.toFixed(2)}</td>
   <td>${quantity}</td>
 `;
   });
 }
 
 function attachSweetListListeners() {
-  // This listener is attached once to the table body and uses event delegation
   sweetTableBody.addEventListener("click", (event) => {
     const target = event.target;
     const sweetId = target.dataset.id; // Get data-id from the clicked button
 
     if (target.classList.contains("btn-edit")) {
-      // Retrieve data from dataset attributes
       const sweet = {
         id: sweetId,
         name: target.dataset.name,
@@ -428,10 +424,8 @@ function attachSweetListListeners() {
       restockSweet(sweetId, quantity);
     }
   });
-  // Add event listener to hide modal when clicking outside the content
   updateSweetModal.addEventListener("click", (event) => {
     if (event.target === updateSweetModal) {
-      // Only close if clicking the overlay itself, not the content
       hideUpdateForm();
     }
   });
@@ -514,6 +508,6 @@ cancelUpdateBtn.addEventListener("click", hideUpdateForm);
 
 // --- Initial Load ---
 document.addEventListener("DOMContentLoaded", () => {
-  fetchSweets(); // Load all sweets when the page loads
-  attachSweetListListeners(); // Attach the single event listener to the table body
+  fetchSweets();
+  attachSweetListListeners();
 });
