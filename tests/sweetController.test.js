@@ -36,4 +36,24 @@ describe("Sweet Controller Tests", () => {
     const sweetInDB = await SweetModel.findOne({ name: "Kaju Katli" });
     expect(sweetInDB).toBeTruthy();
   });
+
+  test("should delete a sweet by ID", async () => {
+    const sweet = await SweetModel.create({
+      name: "Kaju Katli",
+      category: "Nut-Based",
+      price: 50,
+      quantity: 20,
+    });
+
+    await request(app).delete(`/sweets/${sweet._id}`).expect(204);
+    const deleted = await SweetModel.findById(sweet._id);
+    expect(deleted).toBeNull();
+  });
+
+  test("should return 404 if sweet does not exist", async () => {
+    const fakeId = new mongoose.Types.ObjectId();
+    const res = await request(app).delete(`/sweets/${fakeId}`);
+    expect(res.status).toBe(404);
+    expect(res.body.error).toMatch(/not found/i);
+  });
 });
