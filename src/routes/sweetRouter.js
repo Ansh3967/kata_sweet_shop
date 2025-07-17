@@ -10,5 +10,6 @@ router.put("/:id", upload.single("image"), controller.edit);
 router.delete("/:id", controller.remove);
 router.get("/search", controller.searchSweets);
 router.post("/:id/purchase", controller.purchaseSweet);
+router.post("/:id/restock", controller.restockSweet);
 
 module.exports = router;

@@ -152,3 +152,21 @@ exports.purchaseSweet = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+// RESTOCK Sweet
+exports.restockSweet = async (req, res) => {
+  try {
+    const sweet = await Sweet.findById(req.params.id);
+    if (!sweet) return res.status(404).json({ error: "Sweet not found." });
+
+    const { quantity } = req.body;
+    if (!Number.isInteger(quantity) || quantity <= 0)
+      throw new Error("Restock quantity must be a positive integer.");
+
+    sweet.quantity += quantity;
+    await sweet.save();
+    res.status(200).json(sweet);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
