@@ -85,4 +85,17 @@ describe("Sweet Controller Tests", () => {
     expect(res.body.length).toBe(1);
     expect(res.body[0].category).toBe("Vegetable-Based");
   });
+
+  test("should search sweets within price range", async () => {
+    await SweetModel.create([
+      { name: "Kaju Katli", category: "Nut-Based", price: 50, quantity: 20 },
+      { name: "Gajar Halwa", category: "Vegetable", price: 30, quantity: 15 },
+    ]);
+
+    const res = await request(app).get(
+      "/sweets/search?minPrice=20&maxPrice=40"
+    );
+    expect(res.body.length).toBe(1);
+    expect(res.body[0].price).toBe(30);
+  });
 });
