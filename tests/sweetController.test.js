@@ -56,4 +56,33 @@ describe("Sweet Controller Tests", () => {
     expect(res.status).toBe(404);
     expect(res.body.error).toMatch(/not found/i);
   });
+
+  test("should search sweets by name", async () => {
+    await SweetModel.create([
+      { name: "Kaju Katli", category: "Nut-Based", price: 50, quantity: 20 },
+      { name: "Gajar Halwa", category: "Veg", price: 30, quantity: 15 },
+    ]);
+
+    const res = await request(app).get("/sweets/search?name=Gajar");
+    expect(res.body.length).toBe(1);
+    expect(res.body[0].name).toBe("Gajar Halwa");
+  });
+
+  test("should search sweets by category", async () => {
+    await SweetModel.create([
+      { name: "Kaju Katli", category: "Nut-Based", price: 50, quantity: 20 },
+      {
+        name: "Gajar Halwa",
+        category: "Vegetable-Based",
+        price: 30,
+        quantity: 15,
+      },
+    ]);
+
+    const res = await request(app).get(
+      "/sweets/search?category=Vegetable-Based"
+    );
+    expect(res.body.length).toBe(1);
+    expect(res.body[0].category).toBe("Vegetable-Based");
+  });
 });
