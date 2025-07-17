@@ -98,4 +98,36 @@ describe("Sweet Controller Tests", () => {
     expect(res.body.length).toBe(1);
     expect(res.body[0].price).toBe(30);
   });
+
+  test("should reduce quantity on purchase", async () => {
+    const sweet = await SweetModel.create({
+      name: "Gajar Halwa",
+      category: "Vegetable",
+      price: 30,
+      quantity: 15,
+    });
+
+    const res = await request(app)
+      .post(`/sweets/${sweet._id}/purchase`)
+      .send({ quantity: 3 })
+      .expect(200);
+
+    expect(res.body.quantity).toBe(12);
+  });
+
+  test("should return error if stock is insufficient", async () => {
+    const sweet = await SweetModel.create({
+      name: "Gajar Halwa",
+      category: "Vegetable",
+      price: 30,
+      quantity: 15,
+    });
+
+    const res = await request(app)
+      .post(`/sweets/${sweet._id}/purchase`)
+      .send({ quantity: 20 })
+      .expect(400);
+
+    expect(res.body.error).toMatch(/not enough stock/i);
+  });
 });
