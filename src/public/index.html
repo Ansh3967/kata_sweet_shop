@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sweet Shop Management Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- Google Font: Poppins for a modern, clean look -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <header class="dashboard-header">
+        <h1>Sweet Shop Management <span class="icon">🍬</span></h1>
+      </header>
+
+      <main class="dashboard-main-content">
+        <!-- Left Column for Forms -->
+        <div class="forms-column">
+          <section class="card form-section" id="add-sweet-section">
+            <h2>Add New Sweet</h2>
+            <form id="add-sweet-form">
+              <div class="form-group">
+                <label for="add-name">Name:</label>
+                <input type="text" id="add-name" required />
+              </div>
+              <div class="form-group">
+                <label for="add-category">Category:</label>
+                <input type="text" id="add-category" required />
+              </div>
+              <div class="form-group">
+                <label for="add-price">Price:</label>
+                <input
+                  type="number"
+                  id="add-price"
+                  step="0.01"
+                  min="0"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="add-quantity">Quantity:</label>
+                <input
+                  type="number"
+                  id="add-quantity"
+                  min="0"
+                  step="1"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-primary">Add Sweet</button>
+            </form>
+          </section>
+
+          <section class="card form-section" id="search-sweet-section">
+            <h2>Search Sweets</h2>
+            <form id="search-sweet-form">
+              <div class="form-group">
+                <label for="search-name">Name:</label>
+                <input
+                  type="text"
+                  id="search-name"
+                  placeholder="e.g., Kaju Katli"
+                />
+              </div>
+              <div class="form-group">
+                <label for="search-category">Category:</label>
+                <input
+                  type="text"
+                  id="search-category"
+                  placeholder="e.g., Milk-Based"
+                />
+              </div>
+              <div class="form-group price-range">
+                <label>Price Range:</label>
+                <input
+                  type="number"
+                  id="search-min-price"
+                  step="0.01"
+                  min="0"
+                  placeholder="Min Price"
+                />
+                <input
+                  type="number"
+                  id="search-max-price"
+                  step="0.01"
+                  min="0"
+                  placeholder="Max Price"
+                />
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-secondary">Search</button>
+                <button
+                  type="button"
+                  id="clear-search-btn"
+                  class="btn btn-outline"
+                >
+                  Clear Search
+                </button>
+              </div>
+            </form>
+          </section>
+        </div>
+
+        <!-- Right Column for Sweet List -->
+        <div class="content-column">
+          <section class="card sweet-list-section">
+            <h2>Available Sweets</h2>
+            <div id="message-container" class="message-container"></div>
+            <div class="sweet-table-container">
+              <table id="sweet-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Sweet data will be injected here by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+            <p id="no-sweets-message" class="no-data-message hidden">
+              No sweets to display. Add some or adjust your search criteria.
+            </p>
+          </section>
+          <section class="card sweet-list-section">
+            <h2>Search Result</h2>
+            <div id="search-message-container" class="message-container"></div>
+            <div class="sweet-table-container">
+              <table id="search-sweet-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Sweet data will be injected here by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+            <p id="no-search-sweets-message" class="no-data-message hidden">
+              No sweets to display. Add some or adjust your search criteria.
+            </p>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!-- The Modal Overlay for Update Sweet Form -->
+    <div id="update-sweet-modal" class="modal-overlay hidden">
+      <section
+        class="card form-section modal-content"
+        id="update-sweet-section"
+      >
+        <h2>Update Sweet</h2>
+        <form id="update-sweet-form">
+          <input type="hidden" id="update-id" />
+          <div class="form-group">
+            <label for="update-name">Name:</label>
+            <input type="text" id="update-name" required />
+          </div>
+          <div class="form-group">
+            <label for="update-category">Category:</label>
+            <input type="text" id="update-category" required />
+          </div>
+          <div class="form-group">
+            <label for="update-price">Price:</label>
+            <input
+              type="number"
+              id="update-price"
+              step="0.01"
+              min="0"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="update-quantity">Quantity:</label>
+            <input
+              type="number"
+              id="update-quantity"
+              min="0"
+              step="1"
+              required
+            />
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Update Sweet</button>
+            <button
+              type="button"
+              id="cancel-update-btn"
+              class="btn btn-outline"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
