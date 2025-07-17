@@ -16,10 +16,6 @@ const SweetSchema = new mongoose.Schema({
     required: [true, "Sweet price is required"],
     min: [0, "Price cannot be negative"],
   },
-  image: {
-    data: Buffer,
-    contentType: String,
-  },
   quantity: {
     type: Number,
     required: [true, "Sweet quantity is required"],

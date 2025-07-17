@@ -16,19 +16,12 @@ exports.add = async (req, res) => {
         .status(400)
         .json({ error: "Price and quantity cannot be negative." });
     }
-    const imageUrl = req.file ? req.file.path : undefined;
 
     const newSweet = new Sweet({
       name,
       category,
       price: parseFloat(price),
       quantity: parseInt(quantity),
-      image: req.file
-        ? {
-            data: req.file.buffer,
-            contentType: req.file.mimetype,
-          }
-        : undefined,
     });
 
     await newSweet.save();
@@ -54,13 +47,7 @@ exports.get = async (req, res) => {
   try {
     const sweet = await Sweet.findById(req.params.id);
     if (!sweet) return res.status(404).json({ error: "Sweet not found." });
-    let sweetData = sweet.toObject();
-    if (sweet.image && sweet.image.data) {
-      sweetData.imageBase64 = sweet.image.data.toString("base64");
-      sweetData.imageContentType = sweet.image.contentType;
-    }
-
-    res.status(200).json(sweetData);
+    res.status(200).json(sweet);
   } catch (error) {
     res.status(400).json({ error: "Invalid sweet ID format." });
   }
@@ -97,14 +84,6 @@ exports.edit = async (req, res) => {
       if (quantity < 0) throw new Error("Invalid quantity for update.");
       sweet.quantity = parseInt(quantity);
     }
-
-    if (req.file) {
-      sweet.image = {
-        data: req.file.buffer,
-        contentType: req.file.mimetype,
-      };
-    }
-
     await sweet.save();
     res.status(200).json(sweet);
   } catch (error) {
